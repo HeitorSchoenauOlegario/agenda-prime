@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda Prime — Organize. Planeje. Realize.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-card:#141414;
+    --bg-card-2:#191919;
+    --border:#2b2b2b;
+    --white:#f4f4f2;
+    --gray:#9c9c9c;
+    --gray-dim:#6e6e6e;
+    --gold-1:#c9962f;
+    --gold-2:#f2d98a;
+    --gold-3:#8a6a1f;
+    --danger:#b3564a;
+    --radius-s:8px;
+    --radius-m:14px;
+    --radius-l:22px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--white);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{max-width:100%;}
+  a{color:inherit;}
+  ::selection{background:var(--gold-1);color:#0a0a0a;}
+
+  .gold-text{
+    background:linear-gradient(100deg,var(--gold-3) 0%, var(--gold-2) 45%, var(--gold-1) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Poppins',sans-serif;
+    margin:0;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(10,10,10,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 28px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:1.25rem;
+  }
+  .brand .mark{width:30px;height:30px;flex:none;}
+  .brand .agenda{color:var(--white);}
+  .brand .prime{
+    background:linear-gradient(100deg,var(--gold-3), var(--gold-2), var(--gold-1));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    font-weight:800;
+  }
+  nav.links{display:flex;gap:28px;font-size:0.92rem;color:var(--gray);}
+  nav.links a{text-decoration:none;transition:color .15s;}
+  nav.links a:hover{color:var(--white);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:11px 22px;
+    border-radius:999px;
+    font-size:0.92rem;
+    font-weight:600;
+    cursor:pointer;
+    border:1px solid transparent;
+    text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease, opacity .15s;
+    font-family:'Inter',sans-serif;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-gold{
+    background:linear-gradient(100deg,var(--gold-3), var(--gold-2) 55%, var(--gold-1));
+    color:#181206;
+    box-shadow:0 6px 22px -8px rgba(201,150,47,0.55);
+  }
+  .btn-gold:hover{box-shadow:0 8px 26px -6px rgba(201,150,47,0.75);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--white);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{border-color:var(--gold-1);color:var(--gold-2);}
+  .btn-sm{padding:8px 16px;font-size:0.82rem;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 80px;
+    position:relative;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    top:-120px; right:-160px;
+    width:520px;height:520px;
+    background:radial-gradient(circle, rgba(201,150,47,0.16), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.85fr;
+    gap:56px;
+    align-items:center;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--gray);
+    font-size:0.82rem;
+    letter-spacing:0.14em;
+    margin-bottom:22px;
+    padding:6px 14px 6px 6px;
+    border:1px solid var(--border);
+    border-radius:999px;
+  }
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--gold-1);}
+  .hero h1{
+    font-size:clamp(2.3rem, 4.4vw, 3.4rem);
+    line-height:1.08;
+    color:var(--white);
+  }
+  .hero p.lead{
+    margin-top:20px;
+    font-size:1.08rem;
+    color:var(--gray);
+    max-width:46ch;
+    line-height:1.6;
+  }
+  .hero-cta{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .hero-stats{
+    margin-top:44px;
+    display:flex;
+    gap:34px;
+  }
+  .hero-stats div b{
+    display:block;
+    font-family:'Poppins',sans-serif;
+    font-size:1.5rem;
+    color:var(--white);
+  }
+  .hero-stats div span{
+    font-size:0.8rem;
+    color:var(--gray-dim);
+  }
+
+  .hero-visual{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-l);
+    padding:26px;
+    position:relative;
+  }
+  .hero-visual .mock-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:18px;
+  }
+  .hero-visual .mock-head .tag{
+    font-size:0.75rem;color:var(--gray-dim);letter-spacing:0.08em;
+  }
+  .hero-visual .mock-list{display:flex;flex-direction:column;gap:10px;}
+  .hero-visual .mock-item{
+    display:flex;align-items:center;gap:12px;
+    background:var(--bg-card-2);
+    border:1px solid var(--border);
+    border-radius:var(--radius-s);
+    padding:12px 14px;
+    font-size:0.9rem;
+  }
+  .hero-visual .mock-check{
+    width:18px;height:18px;border-radius:6px;
+    border:1.5px solid var(--gold-1);
+    flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .hero-visual .mock-item.done .mock-check{
+    background:linear-gradient(100deg,var(--gold-2),var(--gold-1));
+  }
+  .hero-visual .mock-item.done span{color:var(--gray-dim);text-decoration:line-through;}
+
+  /* ---------- SECTION HEADS ---------- */
+  .section{padding:78px 0;}
+  .section-head{
+    max-width:560px;
+    margin-bottom:44px;
+  }
+  .section-head h2{
+    font-size:clamp(1.6rem,3vw,2.15rem);
+    color:var(--white);
+    line-height:1.18;
+  }
+  .section-head p{
+    margin-top:14px;
+    color:var(--gray);
+    line-height:1.6;
+    font-size:1rem;
+  }
+  .divider{
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--border), transparent);
+    border:none;
+    margin:0;
+  }
+
+  /* ---------- APP (functional) ---------- */
+  #app-section{
+    background:radial-gradient(circle at 15% 20%, rgba(201,150,47,0.06), transparent 45%);
+  }
+  .app-shell{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:0;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-l);
+    overflow:hidden;
+    min-height:520px;
+  }
+  .app-sidebar{
+    background:var(--bg-card-2);
+    border-right:1px solid var(--border);
+    padding:22px 18px;
+    display:flex;
+    flex-direction:column;
+  }
+  .app-sidebar h4{
+    font-size:0.75rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--gray-dim);
+    margin-bottom:14px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+  }
+  .list-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:10px 12px;
+    border-radius:var(--radius-s);
+    cursor:pointer;
+    color:var(--gray);
+    font-size:0.92rem;
+    margin-bottom:4px;
+    transition:background .12s, color .12s;
+  }
+  .list-item:hover{background:rgba(255,255,255,0.04);color:var(--white);}
+  .list-item.active{
+    background:linear-gradient(100deg, rgba(201,150,47,0.18), rgba(242,217,138,0.10));
+    color:var(--gold-2);
+    border:1px solid rgba(201,150,47,0.35);
+  }
+  .list-item .count{
+    font-size:0.74rem;
+    color:var(--gray-dim);
+    background:rgba(255,255,255,0.05);
+    padding:1px 8px;
+    border-radius:999px;
+  }
+  .list-item.active .count{color:var(--gold-2);}
+  .list-item .del-list{
+    display:none;
+    color:var(--gray-dim);
+    font-size:0.9rem;
+    padding:2px 4px;
+  }
+  .list-item:hover .del-list{display:inline-block;}
+  .list-item .del-list:hover{color:var(--danger);}
+
+  .new-list-form{
+    margin-top:auto;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    display:flex;
+    gap:8px;
+  }
+  .new-list-form input{
+    flex:1;
+    min-width:0;
+  }
+
+  .app-main{
+    padding:26px 30px 30px;
+    display:flex;
+    flex-direction:column;
+  }
+  .app-main-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .app-main-head h3{
+    font-size:1.3rem;
+    color:var(--white);
+  }
+  .app-main-head .progress-txt{
+    font-size:0.85rem;
+    color:var(--gray-dim);
+  }
+
+  .task-form{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  input[type="text"]{
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--white);
+    border-radius:var(--radius-s);
+    padding:11px 14px;
+    font-size:0.92rem;
+    font-family:'Inter',sans-serif;
+    outline:none;
+    transition:border-color .15s;
+  }
+  input[type="text"]:focus{border-color:var(--gold-1);}
+  input[type="text"]::placeholder{color:var(--gray-dim);}
+  .task-form input{flex:1;}
+
+  .task-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    flex:1;
+    min-height:120px;
+  }
+  .task-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--bg-card-2);
+    border:1px solid var(--border);
+    border-radius:var(--radius-s);
+    padding:12px 14px;
+    transition:border-color .15s, opacity .15s;
+  }
+  .task-item:hover{border-color:#3a3a3a;}
+  .task-check{
+    width:20px;height:20px;
+    flex:none;
+    border-radius:6px;
+    border:1.5px solid var(--gold-1);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    background:transparent;
+    transition:background .15s;
+  }
+  .task-check svg{opacity:0;width:12px;height:12px;transition:opacity .1s;}
+  .task-item.done .task-check{background:linear-gradient(100deg,var(--gold-2),var(--gold-1));}
+  .task-item.done .task-check svg{opacity:1;}
+  .task-text{
+    flex:1;
+    font-size:0.94rem;
+    color:var(--white);
+    word-break:break-word;
+  }
+  .task-item.done .task-text{color:var(--gray-dim);text-decoration:line-through;}
+  .task-del{
+    background:none;border:none;color:var(--gray-dim);
+    cursor:pointer;font-size:1.1rem;line-height:1;padding:4px;
+    transition:color .15s;
+  }
+  .task-del:hover{color:var(--danger);}
+
+  .empty-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--gray-dim);
+    border:1px dashed var(--border);
+    border-radius:var(--radius-m);
+  }
+  .empty-state b{display:block;color:var(--gray);margin-bottom:6px;font-family:'Poppins',sans-serif;font-weight:600;}
+
+  .app-foot{
+    margin-top:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .app-foot .clear-btn{
+    font-size:0.82rem;
+    color:var(--gray-dim);
+    background:none;border:none;cursor:pointer;
+  }
+  .app-foot .clear-btn:hover{color:var(--danger);}
+
+  /* ---------- FEATURES ---------- */
+  .features{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:18px;
+  }
+  .feat-main{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-l);
+    padding:34px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    min-height:280px;
+    position:relative;
+    overflow:hidden;
+  }
+  .feat-main::after{
+    content:'';
+    position:absolute;
+    top:-60px;left:-60px;
+    width:220px;height:220px;
+    background:radial-gradient(circle, rgba(201,150,47,0.18), transparent 70%);
+  }
+  .feat-main h3{font-size:1.5rem;color:var(--white);position:relative;}
+  .feat-main p{color:var(--gray);margin-top:10px;line-height:1.6;position:relative;max-width:40ch;}
+  .feat-col{display:flex;flex-direction:column;gap:18px;}
+  .feat-card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-m);
+    padding:22px;
+    flex:1;
+  }
+  .feat-card .ic{
+    width:38px;height:38px;
+    border-radius:10px;
+    background:linear-gradient(135deg, rgba(201,150,47,0.2), rgba(242,217,138,0.08));
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;
+    color:var(--gold-2);
+  }
+  .feat-card h4{font-size:1.02rem;color:var(--white);margin-bottom:6px;}
+  .feat-card p{font-size:0.88rem;color:var(--gray);line-height:1.55;}
+
+  /* ---------- DOWNLOAD CTA ---------- */
+  .download-cta{
+    background:linear-gradient(135deg, #151107, #0a0a0a 60%);
+    border:1px solid var(--border);
+    border-radius:var(--radius-l);
+    padding:52px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+  }
+  .download-cta h2{font-size:clamp(1.5rem,2.6vw,2rem);color:var(--white);line-height:1.2;}
+  .download-cta p{color:var(--gray);margin-top:14px;line-height:1.6;max-width:44ch;}
+  .store-row{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .store-badge{
+    display:flex;align-items:center;gap:10px;
+    background:#141414;
+    border:1px solid var(--border);
+    border-radius:var(--radius-s);
+    padding:10px 18px;
+    cursor:pointer;
+    transition:border-color .15s;
+  }
+  .store-badge:hover{border-color:var(--gold-1);}
+  .store-badge .txt small{display:block;font-size:0.68rem;color:var(--gray-dim);}
+  .store-badge .txt b{display:block;font-size:0.92rem;color:var(--white);font-family:'Poppins',sans-serif;}
+
+  .qr-box{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-m);
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    text-align:center;
+  }
+  .qr-box svg{width:120px;height:120px;}
+  .qr-box span{font-size:0.8rem;color:var(--gray-dim);}
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:34px 0;
+  }
+  .footer-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .footer-inner .fbrand{display:flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif;font-weight:600;}
+  .footer-inner .fbrand .mark{width:20px;height:20px;}
+  .footer-inner small{color:var(--gray-dim);font-size:0.82rem;}
+
+  .toast{
+    position:fixed;
+    bottom:26px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--bg-card);
+    border:1px solid var(--gold-1);
+    color:var(--white);
+    padding:12px 20px;
+    border-radius:999px;
+    font-size:0.86rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s, transform .25s;
+    z-index:100;
+    box-shadow:0 10px 30px -10px rgba(0,0,0,0.6);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-visual{order:-1;}
+    .app-shell{grid-template-columns:1fr;}
+    .app-sidebar{
+      border-right:none;border-bottom:1px solid var(--border);
+      flex-direction:row;flex-wrap:wrap;align-items:center;
+    }
+    .app-sidebar h4{width:100%;}
+    .new-list-form{margin-top:12px;width:100%;}
+    .features{grid-template-columns:1fr;}
+    .download-cta{grid-template-columns:1fr;padding:32px 22px;}
+    nav.links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 48 48" fill="none">
+        <defs>
+          <linearGradient id="gmark" x1="0" y1="0" x2="48" y2="48">
+            <stop offset="0%" stop-color="#8a6a1f"/>
+            <stop offset="55%" stop-color="#f2d98a"/>
+            <stop offset="100%" stop-color="#c9962f"/>
+          </linearGradient>
+        </defs>
+        <rect x="6" y="10" width="36" height="32" rx="6" stroke="url(#gmark)" stroke-width="3"/>
+        <path d="M16 10V6M32 10V6" stroke="url(#gmark)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M14 30 L22 16 L28 26 L34 16" stroke="url(#gmark)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="agenda">agenda</span><span class="prime">prime</span>
+    </div>
+    <nav class="links">
+      <a href="#app-section">Minhas tarefas</a>
+      <a href="#recursos">Recursos</a>
+    </nav>
+    <a href="#app-section" class="btn btn-gold btn-sm">Começar</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Feito para a rotina do Senac</div>
+      <h1>Suas tarefas do dia a dia, <span class="gold-text">organizadas com clareza.</span></h1>
+      <p class="lead">Crie listas para cada turma, projeto ou setor, adicione tarefas em segundos e acompanhe o que já foi concluído — direto no navegador, sem precisar instalar nada.</p>
+      <div class="hero-cta">
+        <a href="#app-section" class="btn btn-gold">Começar a organizar</a>
+        <a href="#recursos" class="btn btn-ghost">Ver recursos</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>100%</b><span>gratuito para usar</span></div>
+        <div><b>0 min</b><span>de instalação</span></div>
+        <div><b>∞</b><span>listas e tarefas</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="mock-head">
+        <span class="tag">TAREFAS · HOJE</span>
+        <span class="tag gold-text" style="font-weight:700;">SENAC</span>
+      </div>
+      <div class="mock-list">
+        <div class="mock-item done"><div class="mock-check"></div><span>Enviar lista de presença</span></div>
+        <div class="mock-item"><div class="mock-check"></div><span>Preparar material da oficina</span></div>
+        <div class="mock-item"><div class="mock-check"></div><span>Revisar cronograma da semana</span></div>
+        <div class="mock-item done"><div class="mock-check"></div><span>Responder e-mails pendentes</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="app-section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Organize agora, direto aqui</h2>
+      <p>Crie suas listas, adicione tarefas e marque o que já foi feito. Tudo fica salvo neste navegador, então você pode voltar depois e continuar de onde parou.</p>
+    </div>
+
+    <div class="app-shell">
+      <aside class="app-sidebar">
+        <h4>Minhas listas</h4>
+        <div id="listContainer"></div>
+        <form class="new-list-form" id="newListForm">
+          <input type="text" id="newListInput" placeholder="Nova lista..." maxlength="40">
+          <button type="submit" class="btn btn-ghost btn-sm">+</button>
+        </form>
+      </aside>
+
+      <main class="app-main">
+        <div class="app-main-head">
+          <h3 id="activeListName">—</h3>
+          <span class="progress-txt" id="progressTxt"></span>
+        </div>
+
+        <form class="task-form" id="taskForm">
+          <input type="text" id="taskInput" placeholder="Adicionar uma tarefa..." maxlength="140">
+          <button type="submit" class="btn btn-gold btn-sm">Adicionar</button>
+        </form>
+
+        <div class="task-list" id="taskList"></div>
+
+        <div class="app-foot">
+          <span class="progress-txt" id="footHint">Suas tarefas ficam salvas neste navegador.</span>
+          <button class="clear-btn" id="clearCompleted">Limpar concluídas</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section class="section" id="recursos">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Pensado para quem organiza muita coisa ao mesmo tempo</h2>
+      <p>O Agenda Prime nasceu para dar conta de turmas, projetos e prazos sem virar bagunça.</p>
+    </div>
+    <div class="features">
+      <div class="feat-main">
+        <h3>Listas separadas para cada parte da sua rotina</h3>
+        <p>Aulas, projetos, tarefas administrativas — cada área com sua própria lista, sem misturar tudo em um só lugar.</p>
+      </div>
+      <div class="feat-col">
+        <div class="feat-card">
+          <div class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+          </div>
+          <h4>Marque em um toque</h4>
+          <p>Concluir uma tarefa é só clicar — sem menus extras nem confirmação.</p>
+        </div>
+        <div class="feat-card">
+          <div class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
+          </div>
+          <h4>Fica salvo automaticamente</h4>
+          <p>Cada alteração é guardada na hora, sem precisar clicar em "salvar".</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="fbrand">
+      <svg class="mark" viewBox="0 0 48 48" fill="none">
+        <rect x="6" y="10" width="36" height="32" rx="6" stroke="#c9962f" stroke-width="3"/>
+        <path d="M16 10V6M32 10V6" stroke="#c9962f" stroke-width="3" stroke-linecap="round"/>
+        <path d="M14 30 L22 16 L28 26 L34 16" stroke="#c9962f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span>agenda<span class="gold-text">prime</span></span>
+    </div>
+    <small>Organize. Planeje. Realize. — protótipo de estudo, Senac.</small>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'agendaPrimeData_v1';
+  const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#181206" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  function loadData(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && Array.isArray(parsed.lists) && parsed.lists.length) return parsed;
+      }
+    }catch(e){ console.error('Falha ao ler dados salvos', e); }
+    const defaultListId = uid();
+    return {
+      activeListId: defaultListId,
+      lists: [
+        { id: defaultListId, name: 'Minhas tarefas', tasks: [
+          { id: uid(), text: 'Preparar material da aula', done: false },
+          { id: uid(), text: 'Enviar lista de presença', done: true }
+        ]}
+      ]
+    };
+  }
+
+  function saveData(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }catch(e){
+      console.error('Falha ao salvar dados', e);
+      showToast('Não foi possível salvar agora.');
+    }
+  }
+
+  let data = loadData();
+  if(!data.lists.find(l => l.id === data.activeListId)){
+    data.activeListId = data.lists[0].id;
+  }
+
+  const listContainer = document.getElementById('listContainer');
+  const activeListName = document.getElementById('activeListName');
+  const progressTxt = document.getElementById('progressTxt');
+  const taskList = document.getElementById('taskList');
+  const toast = document.getElementById('toast');
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=> toast.classList.remove('show'), 2200);
+  }
+
+  function activeList(){
+    return data.lists.find(l => l.id === data.activeListId);
+  }
+
+  function render(){
+    // sidebar
+    listContainer.innerHTML = '';
+    data.lists.forEach(list => {
+      const doneCount = list.tasks.filter(t=>t.done).length;
+      const el = document.createElement('div');
+      el.className = 'list-item' + (list.id === data.activeListId ? ' active' : '');
+      el.innerHTML = `
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(list.name)}</span>
+        <span style="display:flex;align-items:center;gap:6px;">
+          <span class="count">${doneCount}/${list.tasks.length}</span>
+          <span class="del-list" title="Excluir lista">&times;</span>
+        </span>`;
+      el.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('del-list')) return;
+        data.activeListId = list.id;
+        saveData();
+        render();
+      });
+      el.querySelector('.del-list').addEventListener('click', (e)=>{
+        e.stopPropagation();
+        if(data.lists.length === 1){
+          showToast('Você precisa ter pelo menos uma lista.');
+          return;
+        }
+        if(confirm(`Excluir a lista "${list.name}"? Essa ação não pode ser desfeita.`)){
+          data.lists = data.lists.filter(l => l.id !== list.id);
+          if(data.activeListId === list.id){
+            data.activeListId = data.lists[0].id;
+          }
+          saveData();
+          render();
+        }
+      });
+      listContainer.appendChild(el);
+    });
+
+    // main
+    const list = activeList();
+    activeListName.textContent = list.name;
+    const doneCount = list.tasks.filter(t=>t.done).length;
+    progressTxt.textContent = list.tasks.length
+      ? `${doneCount} de ${list.tasks.length} concluídas`
+      : '';
+
+    taskList.innerHTML = '';
+    if(!list.tasks.length){
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.innerHTML = `<b>Nenhuma tarefa por aqui ainda</b>Adicione a primeira tarefa desta lista acima.`;
+      taskList.appendChild(empty);
+      return;
+    }
+
+    list.tasks.forEach(task => {
+      const item = document.createElement('div');
+      item.className = 'task-item' + (task.done ? ' done' : '');
+      item.innerHTML = `
+        <button class="task-check" aria-label="Marcar como concluída">${checkIcon}</button>
+        <span class="task-text">${escapeHtml(task.text)}</span>
+        <button class="task-del" aria-label="Excluir tarefa">&times;</button>`;
+      item.querySelector('.task-check').addEventListener('click', ()=>{
+        task.done = !task.done;
+        saveData();
+        render();
+      });
+      item.querySelector('.task-del').addEventListener('click', ()=>{
+        list.tasks = list.tasks.filter(t => t.id !== task.id);
+        saveData();
+        render();
+      });
+      taskList.appendChild(item);
+    });
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  document.getElementById('newListForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const input = document.getElementById('newListInput');
+    const name = input.value.trim();
+    if(!name) return;
+    const id = uid();
+    data.lists.push({ id, name, tasks: [] });
+    data.activeListId = id;
+    input.value = '';
+    saveData();
+    render();
+    showToast('Lista criada.');
+  });
+
+  document.getElementById('taskForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const input = document.getElementById('taskInput');
+    const text = input.value.trim();
+    if(!text) return;
+    activeList().tasks.push({ id: uid(), text, done: false });
+    input.value = '';
+    saveData();
+    render();
+  });
+
+  document.getElementById('clearCompleted').addEventListener('click', ()=>{
+    const list = activeList();
+    const before = list.tasks.length;
+    list.tasks = list.tasks.filter(t => !t.done);
+    if(list.tasks.length !== before){
+      saveData();
+      render();
+      showToast('Tarefas concluídas removidas.');
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
